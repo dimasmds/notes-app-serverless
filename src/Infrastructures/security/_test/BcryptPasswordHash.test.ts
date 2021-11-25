@@ -1,10 +1,10 @@
-import { compare } from 'bcrypt';
+import { compare } from 'bcryptjs';
 import BcryptPasswordHash from '../BcryptPasswordHash';
 
 // skip due long running
 describe('BcryptPasswordHash', () => {
   // because it's big transpiling
-  jest.setTimeout(10000);
+  jest.setTimeout(100000);
   const bcryptPasswordHash = new BcryptPasswordHash();
 
   describe('hash', () => {

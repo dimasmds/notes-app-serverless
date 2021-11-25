@@ -1,6 +1,6 @@
 /* istanbul ignore file */
 
-import { compare, hash } from 'bcrypt';
+import { compare, hash } from 'bcryptjs';
 import PasswordHash from '../../Applications/security/PasswordHash';
 
 class BcryptPasswordHash implements PasswordHash {
