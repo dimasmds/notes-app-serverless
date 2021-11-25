@@ -1,0 +1,9 @@
+node_modules
+.idea
+.env
+.test.env
+coverage
+.dynamodb
+.serverless
+.webpack
+.esbuild

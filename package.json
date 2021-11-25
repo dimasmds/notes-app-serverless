@@ -1,0 +1,50 @@
+{
+  "name": "notes-app-serverless",
+  "version": "1.0.0",
+  "description": "Notes app serverless for Udacity capstone project",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest ./src -i --coverage",
+    "test:watch": "jest ./src --watch -i",
+    "test:watch:all": "jest ./src --watchAll -i",
+    "lint": "eslint ./src --ext .ts",
+    "dynamodb:install": "sls dynamodb install",
+    "dynamodb:start": "sls dynamodb start",
+    "start:offline": "sls offline",
+    "deploy": "sls deploy -v"
+  },
+  "keywords": [],
+  "author": "Dimas Saputra",
+  "license": "ISC",
+  "dependencies": {
+    "aws-lambda": "^1.0.7",
+    "aws-sdk": "^2.1032.0",
+    "aws-xray-sdk": "^3.3.4",
+    "dotenv": "^10.0.0",
+    "instances-container": "^2.0.4",
+    "jsonwebtoken": "^8.5.1",
+    "middy": "^0.36.0",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.15.8",
+    "@babel/preset-typescript": "^7.15.0",
+    "@types/aws-lambda": "^8.10.85",
+    "@types/jest": "^27.0.2",
+    "@types/jsonwebtoken": "^8.5.6",
+    "@types/uuid": "^8.3.3",
+    "@typescript-eslint/eslint-plugin": "^5.0.0",
+    "@typescript-eslint/parser": "^5.0.0",
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.25.2",
+    "jest": "^27.3.0",
+    "serverless": "^2.66.2",
+    "serverless-dynamodb-local": "^0.2.40",
+    "serverless-esbuild": "^1.22.0",
+    "serverless-iam-roles-per-function": "^3.2.0",
+    "serverless-offline": "^8.2.0",
+    "ts-node": "^10.3.0",
+    "typescript": "^4.4.4"
+  }
+}
