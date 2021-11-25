@@ -1,0 +1,66 @@
+service:
+  name: serverless-notes-app
+
+variablesResolutionMode: 20210326
+
+plugins:
+  - serverless-esbuild
+  - serverless-iam-roles-per-function
+  - serverless-dynamodb-local
+  - serverless-offline
+
+custom:
+  dynamodb:
+    stages:
+      - ${self:provider.stage}
+    start:
+      port: 8000
+      inMemory: true
+      migrate: true
+
+  serverless-offline:
+    port: 3003
+    httpPort: 3001
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+
+  tracing:
+    apiGateway: true
+    lambda: true
+
+  stage: ${opt:stage, 'dev'}
+  region: ${opt:region, 'ap-southeast-1'}
+
+  environment:
+    NOTES_TABLE: Notes-${self:provider.stage}
+    NOTES_BY_USER_INDEX: NotesByUserIndex
+    SECRET_ID: NotesAppSecret-${self:provider.stage}
+    ACCESS_TOKEN_SECRET_FIELD: accessTokenSecretField
+    ATTACHMENTS_BUCKET_NAME: dmds-notes-app-attachments-${self:provider.stage}
+    SIGNED_URL_EXPIRATION: 300
+
+
+functions:
+  Hello:
+    handler: src/Interfaces/lambda/http/hello.handler
+    events:
+      - http:
+          path: /hello
+          method: get
+          cors: true
+
+resources:
+  Resources:
+
+    GatewayResponseDefault4XX:
+      Type: AWS::ApiGateway::GatewayResponse
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+          gatewayresponse.header.Access-Control-Allow-Methods: "'GET,OPTIONS,POST'"
+        ResponseType: DEFAULT_4XX
+        RestApiId:
+          Ref: ApiGatewayRestApi
