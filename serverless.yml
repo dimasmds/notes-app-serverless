@@ -45,13 +45,6 @@ provider:
 
 
 functions:
-  Hello:
-    handler: src/Interfaces/lambda/http/hello.handler
-    events:
-      - http:
-          path: /hello
-          method: get
-          cors: true
 
   CreateUser:
     handler: src/Interfaces/lambda/http/createUser.handler
