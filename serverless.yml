@@ -34,6 +34,8 @@ provider:
   region: ${opt:region, 'ap-southeast-1'}
 
   environment:
+    USERS_TABLE: Users-${self:provider.stage}
+    USERS_BY_USERNAME_INDEX: UsersByUsernameIndex
     NOTES_TABLE: Notes-${self:provider.stage}
     NOTES_BY_USER_INDEX: NotesByUserIndex
     SECRET_ID: NotesAppSecret-${self:provider.stage}
@@ -43,13 +45,27 @@ provider:
 
 
 functions:
-  Hello:
-    handler: src/Interfaces/lambda/http/hello.handler
+
+  CreateUser:
+    handler: src/Interfaces/lambda/http/createUser.handler
+    timeout: 30
     events:
       - http:
-          path: /hello
-          method: get
+          path: /users
+          method: post
           cors: true
+          request:
+            schema:
+              application/json: ${file(src/Interfaces/lambda/http/models/create-user-request.json)}
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:PutItem
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.USERS_TABLE}
+      - Effect: Allow
+        Action:
+          - dynamodb:Query
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.USERS_TABLE}/index/${self:provider.environment.USERS_BY_USERNAME_INDEX}
 
 resources:
   Resources:
@@ -64,3 +80,25 @@ resources:
         ResponseType: DEFAULT_4XX
         RestApiId:
           Ref: ApiGatewayRestApi
+
+
+    UsersTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+          - AttributeName: username
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+        TableName: ${self:provider.environment.USERS_TABLE}
+        GlobalSecondaryIndexes:
+          - IndexName: ${self:provider.environment.USERS_BY_USERNAME_INDEX}
+            KeySchema:
+              - AttributeName: username
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
