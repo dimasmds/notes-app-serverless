@@ -39,17 +39,19 @@ describe('UserLogin', () => {
       expect(mockPasswordHash.compare).toBeCalledWith(payload.password, 'hashedPassword');
     });
 
-    it('should not throw error when all correct', async () => {
+    it('should return user id when all correct', async () => {
       // Arrange
       mockUserRepository.getPasswordByUsername = jest.fn(() => Promise.resolve('hashedPassword'));
       mockPasswordHash.compare = jest.fn(() => Promise.resolve(true));
+      mockUserRepository.getUserIdByUsername = jest.fn(() => Promise.resolve('user-123'));
       const payload = {
         username: 'dimasmds',
         password: 'hello123',
       };
 
       // Action
-      await expect(userLogin.login(payload)).resolves.not.toThrowError();
+      const userId = await userLogin.login(payload);
+      expect(userId).toBe('user-123');
       expect(mockUserRepository.getPasswordByUsername).toBeCalledWith(payload.username);
       expect(mockPasswordHash.compare).toBeCalledWith(payload.password, 'hashedPassword');
     });

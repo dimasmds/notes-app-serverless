@@ -29,6 +29,8 @@ class UserLogin {
     const isPasswordValid = await this.passwordHash.compare(password, hashedPassword);
 
     if (!isPasswordValid) throw new Error('USER_LOGIN.PASSWORD_IS_NOT_VALID');
+
+    return this.userRepository.getUserIdByUsername(username);
   }
 }
 
