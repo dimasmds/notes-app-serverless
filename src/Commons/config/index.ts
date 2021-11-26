@@ -13,6 +13,13 @@ const config = {
       },
     },
   },
+  token: {
+    jwt: {
+      SECRET_NAME: process.env.TOKEN_JWT_SECRET_NAME,
+      SECRET_FIELD: process.env.TOKEN_JWT_SECRET_FIELD,
+      EXPIRES_TIME: process.env.TOKEN_JWT_EXPIRES_TIME,
+    },
+  },
 };
 
 export default config;
