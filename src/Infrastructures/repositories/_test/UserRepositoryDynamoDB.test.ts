@@ -43,4 +43,29 @@ describe('UserRepositoryDynamoDB', () => {
       });
     });
   });
+
+  describe('getPasswordByUsername', () => {
+    it('should return null if not found', async () => {
+      const result = await userRepository.getPasswordByUsername('test');
+      expect(result).toBeNull();
+    });
+
+    it('should return password if found', async () => {
+      await UsersTableDynamoDBHelper.addUser({ password: 'hashedPassword' });
+      const result = await userRepository.getPasswordByUsername('dimasmds');
+      expect(result).toBe('hashedPassword');
+    });
+  });
+
+  describe('getUserIdByUsername', () => {
+    it('should throw error when username not found', () => {
+      expect(userRepository.getUserIdByUsername('test')).rejects.toThrow();
+    });
+
+    it('should return userId by username', async () => {
+      await UsersTableDynamoDBHelper.addUser({ id: 'user-123' });
+      const result = await userRepository.getUserIdByUsername('dimasmds');
+      expect(result).toBe('user-123');
+    });
+  });
 });
