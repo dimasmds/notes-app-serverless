@@ -53,6 +53,27 @@ functions:
           method: get
           cors: true
 
+  CreateUser:
+    handler: src/Interfaces/lambda/http/createUser.handler
+    timeout: 30
+    events:
+      - http:
+          path: /users
+          method: post
+          cors: true
+          request:
+            schema:
+              application/json: ${file(src/Interfaces/lambda/http/models/create-user-request.json)}
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:PutItem
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.USERS_TABLE}
+      - Effect: Allow
+        Action:
+          - dynamodb:Query
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.USERS_TABLE}/index/${self:provider.environment.USERS_BY_USERNAME_INDEX}
+
 resources:
   Resources:
 
