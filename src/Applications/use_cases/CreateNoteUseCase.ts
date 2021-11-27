@@ -34,7 +34,7 @@ class CreateNoteUseCase {
     return noteCreation.create({
       title,
       body,
-      user: userId,
+      userId,
     });
   }
 }

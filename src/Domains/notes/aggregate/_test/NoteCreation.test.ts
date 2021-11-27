@@ -17,14 +17,14 @@ describe('NoteCreation', () => {
       const payload = {
         title: 'new note',
         body: 'body note',
-        user: 'user-123',
+        userId: 'user-123',
       };
 
       const expectedNewNote = {
         id: 'note-123',
         title: 'new note',
         body: 'body note',
-        user: 'user-123',
+        userId: 'user-123',
         createdAt: expect.any(String),
         updatedAt: expect.any(String),
         collaborators: [],
