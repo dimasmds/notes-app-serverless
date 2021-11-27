@@ -47,6 +47,18 @@ provider:
 
 functions:
 
+  Auth:
+    handler: src/Interfaces/lambda/http/authentication.handler
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - secretsmanager:GetSecretValue
+        Resource: !Ref NotesAppSecret
+      - Effect: Allow
+        Action:
+          - kms:Decrypt
+        Resource: !GetAtt KMSKey.Arn
+
   CreateUser:
     handler: src/Interfaces/lambda/http/createUser.handler
     timeout: 30
