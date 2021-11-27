@@ -38,8 +38,9 @@ provider:
     USERS_BY_USERNAME_INDEX: UsersByUsernameIndex
     NOTES_TABLE: Notes-${self:provider.stage}
     NOTES_BY_USER_INDEX: NotesByUserIndex
-    SECRET_ID: NotesAppSecret-${self:provider.stage}
-    ACCESS_TOKEN_SECRET_FIELD: accessTokenSecretField
+    TOKEN_JWT_SECRET_NAME: NotesAppSecret-${self:provider.stage}
+    TOKEN_JWT_SECRET_FIELD: accessTokenSecretField
+    TOKEN_JWT_EXPIRES_TIME: 50000
     ATTACHMENTS_BUCKET_NAME: dmds-notes-app-attachments-${self:provider.stage}
     SIGNED_URL_EXPIRATION: 300
 
@@ -60,7 +61,38 @@ functions:
     iamRoleStatements:
       - Effect: Allow
         Action:
-          - dynamodb:PutItem
+          - dynamodb:Query
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.USERS_TABLE}/index/${self:provider.environment.USERS_BY_USERNAME_INDEX}
+      - Effect: Allow
+        Action:
+          - xray:GetSamplingRules
+          - xray:GetSamplingTargets
+          - xray:GetSamplingStatisticSummaries
+          - xray:BatchGetTraces
+          - xray:GetServiceGraph
+          - xray:GetTraceGraph
+          - xray:GetTraceSummaries
+          - xray:GetGroups
+          - xray:GetGroup
+          - xray:PutTraceSegments
+        Resource:
+          - "*"
+
+  LoginUser:
+    handler: src/Interfaces/lambda/http/loginUser.handler
+    timeout: 30
+    events:
+      - http:
+          path: /login
+          method: post
+          cors: true
+          request:
+            schema:
+              application/json: ${file(src/Interfaces/lambda/http/models/login-user-request.json)}
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:GetItem
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.USERS_TABLE}
       - Effect: Allow
         Action:
@@ -80,6 +112,15 @@ functions:
           - xray:PutTraceSegments
         Resource:
           - "*"
+      - Effect: Allow
+        Action:
+          - secretsmanager:GetSecretValue
+        Resource: !Ref NotesAppSecret
+      - Effect: Allow
+        Action:
+          - kms:Decrypt
+        Resource: !GetAtt KMSKey.Arn
+
 
 resources:
   Resources:
@@ -116,3 +157,37 @@ resources:
                 KeyType: HASH
             Projection:
               ProjectionType: ALL
+
+    KMSKey:
+      Type: AWS::KMS::Key
+      Properties:
+        Description: KMS key to encrypt secret
+        KeyPolicy:
+          Version: '2012-10-17'
+          Id: key-default-1
+          Statement:
+            - Sid: Allow administration of the key
+              Effect: Allow
+              Principal:
+                AWS:
+                  Fn::Join:
+                    - ':'
+                    - - 'arn:aws:iam:'
+                      - Ref: AWS::AccountId
+                      - 'root'
+              Action:
+                - 'kms:*'
+              Resource: '*'
+
+    KMSKeyAlias:
+      Type: AWS::KMS::Alias
+      Properties:
+        AliasName: alias/notesAppKey-${self:provider.stage}
+        TargetKeyId: !Ref KMSKey
+
+    NotesAppSecret:
+      Type: AWS::SecretsManager::Secret
+      Properties:
+        Name: ${self:provider.environment.TOKEN_JWT_SECRET_NAME}
+        Description: Notes App secret
+        KmsKeyId: !Ref KMSKey

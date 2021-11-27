@@ -39,6 +39,40 @@ class UserRepositoryDynamoDB implements UserRepository {
       username,
     };
   }
+
+  async getPasswordByUsername(username: string): Promise<string | null> {
+    const result = await this.client.query({
+      TableName: config.dynamodb.tables.users.NAME,
+      IndexName: config.dynamodb.tables.users.index.BY_USERNAME,
+      KeyConditionExpression: 'username = :username',
+      ExpressionAttributeValues: {
+        ':username': username,
+      },
+    }).promise();
+
+    if (result.Count === 0) {
+      return null;
+    }
+
+    return result.Items[0].password;
+  }
+
+  async getUserIdByUsername(username: string): Promise<string> {
+    const result = await this.client.query({
+      TableName: config.dynamodb.tables.users.NAME,
+      IndexName: config.dynamodb.tables.users.index.BY_USERNAME,
+      KeyConditionExpression: 'username = :username',
+      ExpressionAttributeValues: {
+        ':username': username,
+      },
+    }).promise();
+
+    if (result.Count === 0) {
+      throw new Error('User not found');
+    }
+
+    return result.Items[0].id;
+  }
 }
 
 export default UserRepositoryDynamoDB;
