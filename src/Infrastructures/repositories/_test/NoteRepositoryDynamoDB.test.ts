@@ -78,4 +78,39 @@ describe('NoteRepositoryDynamoDB', () => {
       expect(notes[1].id).toEqual('note-123');
     });
   });
+
+  describe('getAllUnarchivedByUser', () => {
+    it('should return all archived notes by user id', async () => {
+      // Arrange
+      await NotesTableDynamoDBHelper.addNote({
+        id: 'note-123',
+        userId: 'user-123',
+      });
+      await NotesTableDynamoDBHelper.addNote({
+        id: 'note-456',
+        userId: 'user-123',
+        archived: true,
+      });
+      await NotesTableDynamoDBHelper.addNote({
+        id: 'note-789',
+        userId: 'user-456',
+        archived: true,
+      });
+      await NotesTableDynamoDBHelper.addNote({
+        id: 'note-101112',
+        userId: 'user-456',
+      });
+      await NotesTableDynamoDBHelper.addNote({
+        id: 'note-131415',
+        userId: 'user-123',
+      });
+
+      // Action
+      const notes = await noteRepository.getAllArchivedByUser('user-123');
+
+      // Assert
+      expect(notes.length).toEqual(1);
+      expect(notes[0].id).toEqual('note-456');
+    });
+  });
 });
