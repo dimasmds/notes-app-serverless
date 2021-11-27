@@ -5,7 +5,7 @@ type Note = {
   archived: boolean;
   createdAt: string;
   updatedAt: string;
-  owner: string;
+  user: string;
   collaborators: string[];
 }
 

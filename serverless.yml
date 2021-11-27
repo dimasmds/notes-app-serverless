@@ -37,7 +37,7 @@ provider:
     USERS_TABLE: Users-${self:provider.stage}
     USERS_BY_USERNAME_INDEX: UsersByUsernameIndex
     NOTES_TABLE: Notes-${self:provider.stage}
-    NOTES_BY_OWNER_INDEX: NotesByOwnerIndex
+    NOTES_BY_USER_INDEX: NotesByUserIndex
     TOKEN_JWT_SECRET_NAME: NotesAppSecret-${self:provider.stage}
     TOKEN_JWT_SECRET_FIELD: accessTokenSecretField
     TOKEN_JWT_EXPIRES_TIME: 50000
@@ -207,7 +207,7 @@ resources:
         AttributeDefinitions:
           - AttributeName: id
             AttributeType: S
-          - AttributeName: owner
+          - AttributeName: user
             AttributeType: S
         KeySchema:
           - AttributeName: id
@@ -215,9 +215,9 @@ resources:
         BillingMode: PAY_PER_REQUEST
         TableName: ${self:provider.environment.NOTES_TABLE}
         GlobalSecondaryIndexes:
-          - IndexName: ${self:provider.environment.NOTES_BY_OWNER_INDEX}
+          - IndexName: ${self:provider.environment.NOTES_BY_USER_INDEX}
             KeySchema:
-              - AttributeName: owner
+              - AttributeName: user
                 KeyType: HASH
             Projection:
               ProjectionType: ALL

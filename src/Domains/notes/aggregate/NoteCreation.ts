@@ -10,7 +10,7 @@ type NoteCreationDependencies = {
 type NoteCreationPayload = {
   title: string
   body: string
-  owner: string
+  user: string
 }
 
 class NoteCreation {
@@ -24,7 +24,7 @@ class NoteCreation {
   }
 
   async create(payload: NoteCreationPayload) {
-    const { title, body, owner } = payload;
+    const { title, body, user } = payload;
     const id = await this.idGenerator.generate('note');
     const createdAt = new Date().toISOString();
 
@@ -32,7 +32,7 @@ class NoteCreation {
       id,
       title,
       body,
-      owner,
+      user,
       createdAt,
       updatedAt: createdAt,
       collaborators: [],
