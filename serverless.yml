@@ -133,6 +133,37 @@ functions:
           - kms:Decrypt
         Resource: !GetAtt KMSKey.Arn
 
+  CreateNote:
+    handler: src/Interfaces/lambda/http/createNote.handler
+    events:
+      - http:
+          path: /notes
+          method: post
+          cors: true
+          authorizer: Auth
+          request:
+            schema:
+              application/json: ${file(src/Interfaces/lambda/http/models/create-note-request.json)}
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:PutItem
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.NOTES_TABLE}
+      - Effect: Allow
+        Action:
+          - xray:GetSamplingRules
+          - xray:GetSamplingTargets
+          - xray:GetSamplingStatisticSummaries
+          - xray:BatchGetTraces
+          - xray:GetServiceGraph
+          - xray:GetTraceGraph
+          - xray:GetTraceSummaries
+          - xray:GetGroups
+          - xray:GetGroup
+          - xray:PutTraceSegments
+        Resource:
+          - "*"
+
 
 resources:
   Resources:
