@@ -28,7 +28,7 @@ describe('TokenCreation', () => {
         config.token.jwt.SECRET_FIELD, config.token.jwt.SECRET_NAME,
       );
       expect(mockJwtTokenize.createToken).toBeCalledWith(
-        payload, 'shh', config.token.jwt.EXPIRES_TIME,
+        payload, 'shh', Number(config.token.jwt.EXPIRES_TIME),
       );
     });
   });
