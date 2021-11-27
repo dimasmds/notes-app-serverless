@@ -20,6 +20,9 @@ const config = {
       EXPIRES_TIME: process.env.TOKEN_JWT_EXPIRES_TIME,
     },
   },
+  awsSdk: {
+    region: process.env.AWS_REGION,
+  },
 };
 
 export default config;
