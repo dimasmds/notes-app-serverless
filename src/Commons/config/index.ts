@@ -11,6 +11,12 @@ const config = {
           BY_USERNAME: process.env.USERS_BY_USERNAME_INDEX,
         },
       },
+      notes: {
+        NAME: process.env.NOTES_TABLE,
+        index: {
+          BY_OWNER: process.env.NOTES_BY_OWNER_INDEX,
+        },
+      },
     },
   },
   token: {
