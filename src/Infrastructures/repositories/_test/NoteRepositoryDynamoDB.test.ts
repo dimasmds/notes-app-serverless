@@ -19,7 +19,7 @@ describe('NoteRepositoryDynamoDB', () => {
         createdAt: 'dummy_created_at',
         updatedAt: 'dummy_updated_at',
         archived: false,
-        owner: 'user-123',
+        userId: 'user-123',
         collaborators: [],
       };
 
@@ -38,8 +38,44 @@ describe('NoteRepositoryDynamoDB', () => {
       expect(item.createdAt).toEqual(note.createdAt);
       expect(item.updatedAt).toEqual(note.updatedAt);
       expect(item.archived).toEqual(note.archived);
-      expect(item.owner).toEqual(note.owner);
+      expect(item.userId).toEqual(note.userId);
       expect(item.collaborators).toEqual(note.collaborators);
+    });
+  });
+
+  describe('getAllUnarchivedByUser', () => {
+    it('should return all unarchived notes by owner', async () => {
+      // Arrange
+      await NotesTableDynamoDBHelper.addNote({
+        id: 'note-123',
+        userId: 'user-123',
+      });
+      await NotesTableDynamoDBHelper.addNote({
+        id: 'note-456',
+        userId: 'user-123',
+        archived: true,
+      });
+      await NotesTableDynamoDBHelper.addNote({
+        id: 'note-789',
+        userId: 'user-456',
+        archived: true,
+      });
+      await NotesTableDynamoDBHelper.addNote({
+        id: 'note-101112',
+        userId: 'user-456',
+      });
+      await NotesTableDynamoDBHelper.addNote({
+        id: 'note-131415',
+        userId: 'user-123',
+      });
+
+      // Action
+      const notes = await noteRepository.getAllUnarchivedByUser('user-123');
+
+      // Assert
+      expect(notes.length).toEqual(2);
+      expect(notes[0].id).toEqual('note-131415');
+      expect(notes[1].id).toEqual('note-123');
     });
   });
 });

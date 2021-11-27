@@ -14,7 +14,7 @@ const config = {
       notes: {
         NAME: process.env.NOTES_TABLE,
         index: {
-          BY_OWNER: process.env.NOTES_BY_OWNER_INDEX,
+          BY_USER_ID: process.env.NOTES_BY_USER_ID_INDEX,
         },
       },
     },

@@ -3,7 +3,7 @@ import Note from '../entities/Note';
 
 interface NoteRepository {
   persist(note: Note): Promise<void>;
-  getAllUnarchivedByUser(user: string): Promise<Note[]>;
+  getAllUnarchivedByUser(userId: string): Promise<Note[]>;
 }
 
 export default NoteRepository;

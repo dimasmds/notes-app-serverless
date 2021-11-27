@@ -17,6 +17,19 @@ class NoteRepositoryDynamoDB implements NoteRepository {
       Item: note,
     }).promise();
   }
+
+  async getAllUnarchivedByUser(userId: string): Promise<Note[]> {
+    const result = await this.client.query({
+      TableName: config.dynamodb.tables.notes.NAME,
+      IndexName: config.dynamodb.tables.notes.index.BY_USER_ID,
+      KeyConditionExpression: 'userId = :userId',
+      ExpressionAttributeValues: {
+        ':userId': userId,
+      },
+    }).promise();
+
+    return result.Items.filter((item: Note) => !item.archived) as Note[];
+  }
 }
 
 export default NoteRepositoryDynamoDB;
