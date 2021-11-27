@@ -39,4 +39,19 @@ describe('JwtTokenizeImpl', () => {
       expect(result.foo).toEqual('bar');
     });
   });
+
+  describe('verify', () => {
+    it('should verify token correctly', async () => {
+      // Arrange
+      const token = sign({ foo: 'bar' }, 'secret');
+
+      // Action
+      const result = await jwtTokenizeImpl.verify(token, 'secret');
+      const otherResult = await jwtTokenizeImpl.verify(token, 'otherSecret');
+
+      // Assert
+      expect(result).toEqual(true);
+      expect(otherResult).toEqual(false);
+    });
+  });
 });

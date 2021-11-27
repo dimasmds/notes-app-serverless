@@ -1,4 +1,4 @@
-import { sign, decode } from 'jsonwebtoken';
+import { sign, decode, verify } from 'jsonwebtoken';
 import JwtTokenize, { TokenPayload } from '../../Applications/security/JwtTokenize';
 
 class JwtTokenizeImpl implements JwtTokenize {
@@ -8,6 +8,15 @@ class JwtTokenizeImpl implements JwtTokenize {
 
   async decode(token: string): Promise<TokenPayload> {
     return decode(token) as TokenPayload;
+  }
+
+  async verify(token: string, secret: string): Promise<boolean> {
+    try {
+      await verify(token, secret);
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 }
 
