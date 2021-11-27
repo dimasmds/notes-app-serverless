@@ -6,6 +6,8 @@ import RegisterUserUseCase from '../Applications/use_cases/RegisterUserUseCase';
 import AWSSecretsManager from './security/AWSSecretsManager';
 import JwtTokenizeImpl from './security/JwtTokenizeImpl';
 import LoginUseCase from '../Applications/use_cases/LoginUseCase';
+import NoteRepositoryDynamoDB from './repositories/NoteRepositoryDynamoDB';
+import CreateNoteUseCase from '../Applications/use_cases/CreateNoteUseCase';
 
 const container = createContainer();
 
@@ -15,6 +17,10 @@ const useCaseParameter: ParameterOption = {
     {
       name: 'userRepository',
       internal: 'UserRepository',
+    },
+    {
+      name: 'noteRepository',
+      internal: 'NoteRepository',
     },
     {
       name: 'idGenerator',
@@ -40,6 +46,10 @@ container.register([
   {
     key: 'UserRepository',
     Class: UserRepositoryDynamoDB,
+  },
+  {
+    key: 'NoteRepository',
+    Class: NoteRepositoryDynamoDB,
   },
   {
     key: 'IdGenerator',
@@ -69,6 +79,11 @@ container.register([
   {
     key: LoginUseCase.name,
     Class: LoginUseCase,
+    parameter: useCaseParameter,
+  },
+  {
+    key: CreateNoteUseCase.name,
+    Class: CreateNoteUseCase,
     parameter: useCaseParameter,
   },
 ]);
