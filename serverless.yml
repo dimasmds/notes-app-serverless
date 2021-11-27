@@ -37,7 +37,7 @@ provider:
     USERS_TABLE: Users-${self:provider.stage}
     USERS_BY_USERNAME_INDEX: UsersByUsernameIndex
     NOTES_TABLE: Notes-${self:provider.stage}
-    NOTES_BY_USER_INDEX: NotesByUserIndex
+    NOTES_BY_OWNER_INDEX: NotesByOwnerIndex
     TOKEN_JWT_SECRET_NAME: NotesAppSecret-${self:provider.stage}
     TOKEN_JWT_SECRET_FIELD: accessTokenSecretField
     TOKEN_JWT_EXPIRES_TIME: 50000
@@ -154,6 +154,27 @@ resources:
           - IndexName: ${self:provider.environment.USERS_BY_USERNAME_INDEX}
             KeySchema:
               - AttributeName: username
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+
+    NotesTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+          - AttributeName: owner
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+        TableName: ${self:provider.environment.NOTES_TABLE}
+        GlobalSecondaryIndexes:
+          - IndexName: ${self:provider.environment.NOTES_BY_OWNER_INDEX}
+            KeySchema:
+              - AttributeName: owner
                 KeyType: HASH
             Projection:
               ProjectionType: ALL
