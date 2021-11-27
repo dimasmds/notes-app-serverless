@@ -9,6 +9,7 @@ export type TokenPayload = {
 
 interface JwtTokenize {
   createToken(payload: TokenPayload, secret: string, expiresIn: number) : Promise<string>
+  decode(token: string) : Promise<TokenPayload>
 }
 
 export default JwtTokenize;
