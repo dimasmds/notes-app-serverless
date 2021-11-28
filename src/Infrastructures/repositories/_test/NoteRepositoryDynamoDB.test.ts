@@ -113,4 +113,67 @@ describe('NoteRepositoryDynamoDB', () => {
       expect(notes[0].id).toEqual('note-456');
     });
   });
+
+  describe('getNoteById', () => {
+    it('should return null if not found', async () => {
+      // Action
+      const note = await noteRepository.getNoteById('note-123');
+
+      // Assert
+      expect(note).toBeNull();
+    });
+
+    it('should return note if found', async () => {
+      // Arrange
+      await NotesTableDynamoDBHelper.addNote({
+        id: 'note-123',
+        userId: 'user-123',
+      });
+
+      // Action
+      const note = await noteRepository.getNoteById('note-123');
+
+      // Assert
+      expect(note.id).toEqual('note-123');
+      expect(note.userId).toEqual('user-123');
+    });
+  });
+
+  describe('isNoteOwner', () => {
+    it('should return false if note not found', async () => {
+      // Action
+      const isOwner = await noteRepository.isNoteOwner('note-123', 'user-123');
+
+      // Assert
+      expect(isOwner).toBeFalsy();
+    });
+
+    it('should return false if user not owned the note', async () => {
+      // Arrange
+      await NotesTableDynamoDBHelper.addNote({
+        id: 'note-123',
+        userId: 'user-456',
+      });
+
+      // Action
+      const isOwner = await noteRepository.isNoteOwner('note-123', 'user-123');
+
+      // Assert
+      expect(isOwner).toBeFalsy();
+    });
+
+    it('should return true if user owned the note', async () => {
+      // Arrange
+      await NotesTableDynamoDBHelper.addNote({
+        id: 'note-123',
+        userId: 'user-123',
+      });
+
+      // Action
+      const isOwner = await noteRepository.isNoteOwner('note-123', 'user-123');
+
+      // Assert
+      expect(isOwner).toBeTruthy();
+    });
+  });
 });

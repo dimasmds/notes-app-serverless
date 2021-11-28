@@ -43,6 +43,23 @@ class NoteRepositoryDynamoDB implements NoteRepository {
 
     return result.Items.filter((item: Note) => item.archived) as Note[];
   }
+
+  async getNoteById(id: string): Promise<Note | null> {
+    const result = await this.client.query({
+      TableName: config.dynamodb.tables.notes.NAME,
+      KeyConditionExpression: 'id = :id',
+      ExpressionAttributeValues: {
+        ':id': id,
+      },
+    }).promise();
+
+    return result.Count === 0 ? null : result.Items[0] as Note;
+  }
+
+  async isNoteOwner(noteId: string, userId: string): Promise<boolean> {
+    const note = await this.getNoteById(noteId);
+    return !note ? false : note.userId === userId;
+  }
 }
 
 export default NoteRepositoryDynamoDB;
