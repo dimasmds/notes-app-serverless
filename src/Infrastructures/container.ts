@@ -8,6 +8,7 @@ import JwtTokenizeImpl from './security/JwtTokenizeImpl';
 import LoginUseCase from '../Applications/use_cases/LoginUseCase';
 import NoteRepositoryDynamoDB from './repositories/NoteRepositoryDynamoDB';
 import CreateNoteUseCase from '../Applications/use_cases/CreateNoteUseCase';
+import GetNotesUseCase from '../Applications/use_cases/GetNotesUseCase';
 
 const container = createContainer();
 
@@ -84,6 +85,11 @@ container.register([
   {
     key: CreateNoteUseCase.name,
     Class: CreateNoteUseCase,
+    parameter: useCaseParameter,
+  },
+  {
+    key: GetNotesUseCase.name,
+    Class: GetNotesUseCase,
     parameter: useCaseParameter,
   },
 ]);
