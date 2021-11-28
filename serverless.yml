@@ -192,6 +192,34 @@ functions:
         Resource:
           - "*"
 
+  GetArchivedNotes:
+    handler: src/Interfaces/lambda/http/getArchivedNotes.handler
+    events:
+      - http:
+          path: /archive
+          method: get
+          cors: true
+          authorizer: Auth
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:Query
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.NOTES_TABLE}/index/${self:provider.environment.NOTES_BY_USER_ID_INDEX}
+      - Effect: Allow
+        Action:
+          - xray:GetSamplingRules
+          - xray:GetSamplingTargets
+          - xray:GetSamplingStatisticSummaries
+          - xray:BatchGetTraces
+          - xray:GetServiceGraph
+          - xray:GetTraceGraph
+          - xray:GetTraceSummaries
+          - xray:GetGroups
+          - xray:GetGroup
+          - xray:PutTraceSegments
+        Resource:
+          - "*"
+
 
 resources:
   Resources:
