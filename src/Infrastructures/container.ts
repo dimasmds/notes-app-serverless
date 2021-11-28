@@ -9,6 +9,7 @@ import LoginUseCase from '../Applications/use_cases/LoginUseCase';
 import NoteRepositoryDynamoDB from './repositories/NoteRepositoryDynamoDB';
 import CreateNoteUseCase from '../Applications/use_cases/CreateNoteUseCase';
 import GetNotesUseCase from '../Applications/use_cases/GetNotesUseCase';
+import GetArchivedNotesUseCase from '../Applications/use_cases/GetArchivedNotesUseCase';
 
 const container = createContainer();
 
@@ -90,6 +91,11 @@ container.register([
   {
     key: GetNotesUseCase.name,
     Class: GetNotesUseCase,
+    parameter: useCaseParameter,
+  },
+  {
+    key: GetArchivedNotesUseCase.name,
+    Class: GetArchivedNotesUseCase,
     parameter: useCaseParameter,
   },
 ]);
