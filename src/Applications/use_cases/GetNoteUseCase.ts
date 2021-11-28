@@ -19,11 +19,14 @@ class GetNoteUseCase {
 
   async execute({ token, id }: UseCasePayload) {
     const { userId } = await this.jwtTokenize.decode(token);
-    const isOwner = await this.noteRepository.isNoteOwner(id, userId);
 
+    const note = await this.noteRepository.getNoteById(id);
+    if (!note) throw new Error('GET_NOTE_USE_CASE.NOTE_NOT_FOUND');
+
+    const isOwner = note.userId === userId;
     if (!isOwner) throw new Error('GET_NOTE_USE_CASE.USER_NOT_OWNED_THE_NOTE');
 
-    return this.noteRepository.getNoteById(id);
+    return note;
   }
 }
 
