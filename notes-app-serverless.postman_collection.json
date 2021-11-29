@@ -1,0 +1,1218 @@
+{
+	"info": {
+		"_postman_id": "12bf082f-c183-4127-9e79-4d23653d53db",
+		"name": "Notes App Serverless",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "users",
+			"item": [
+				{
+					"name": "Create User With Correct Bad Payload",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('it should response 400', () => {\r",
+									"    pm.expect(pm.response).to.have.status(400);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"user-{{$timestamp}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{appId}}.execute-api.{{region}}.amazonaws.com/dev/users",
+							"protocol": "http",
+							"host": [
+								"{{appId}}",
+								"execute-api",
+								"{{region}}",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"dev",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create User With Correct Payload",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('it should response 201', () => {\r",
+									"    pm.expect(pm.response).to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test('it should response with correct body', () => {\r",
+									"    const payload = pm.response.json();\r",
+									"\r",
+									"    console.log(payload);\r",
+									"\r",
+									"    pm.expect(typeof payload.user.id).to.equal('string')\r",
+									"    pm.expect(typeof payload.user.username).to.equal('string');\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"user-{{$timestamp}}\",\r\n    \"password\": \"secret\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{appId}}.execute-api.{{region}}.amazonaws.com/dev/users",
+							"protocol": "http",
+							"host": [
+								"{{appId}}",
+								"execute-api",
+								"{{region}}",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"dev",
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "authentication",
+			"item": [
+				{
+					"name": "prerequisite",
+					"item": [
+						{
+							"name": "Create John User",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"john\",\r\n    \"password\": \"secret\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{appId}}.execute-api.{{region}}.amazonaws.com/dev/users",
+									"protocol": "http",
+									"host": [
+										"{{appId}}",
+										"execute-api",
+										"{{region}}",
+										"amazonaws",
+										"com"
+									],
+									"path": [
+										"dev",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Jane User",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"jane\",\r\n    \"password\": \"secret\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{appId}}.execute-api.{{region}}.amazonaws.com/dev/users",
+									"protocol": "http",
+									"host": [
+										"{{appId}}",
+										"execute-api",
+										"{{region}}",
+										"amazonaws",
+										"com"
+									],
+									"path": [
+										"dev",
+										"users"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Login with Unknown Username",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('it should response with 404 status code', () => {\r",
+									"    pm.expect(pm.response).to.have.status(404);\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"unknown\",\r\n    \"password\": \"secret\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{appId}}.execute-api.{{region}}.amazonaws.com/dev/login",
+							"protocol": "http",
+							"host": [
+								"{{appId}}",
+								"execute-api",
+								"{{region}}",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"dev",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login with Invalid Credential",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('it should response with 401 status code', () => {\r",
+									"    pm.expect(pm.response).to.have.status(401);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"john\",\r\n    \"password\": \"wrongpassword\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{appId}}.execute-api.{{region}}.amazonaws.com/dev/login",
+							"protocol": "http",
+							"host": [
+								"{{appId}}",
+								"execute-api",
+								"{{region}}",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"dev",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login with John User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('it should response with 200', () => {\r",
+									"    pm.expect(pm.response).to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test('it should contain correct body', () => {\r",
+									"    const payload = pm.response.json();\r",
+									"\r",
+									"    pm.expect(typeof payload.token).to.equal('string');\r",
+									"\r",
+									"    pm.collectionVariables.set('accessTokenJohn', payload.token);\r",
+									"});\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"john\",\r\n    \"password\": \"secret\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{appId}}.execute-api.{{region}}.amazonaws.com/dev/login",
+							"protocol": "http",
+							"host": [
+								"{{appId}}",
+								"execute-api",
+								"{{region}}",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"dev",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login with Jane User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('it should response with 200', () => {\r",
+									"    pm.expect(pm.response).to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test('it should contain correct body', () => {\r",
+									"    const payload = pm.response.json();\r",
+									"\r",
+									"    pm.expect(typeof payload.token).to.equal('string');\r",
+									"\r",
+									"    pm.collectionVariables.set('accessTokenJane', payload.token);\r",
+									"});\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"jane\",\r\n    \"password\": \"secret\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{appId}}.execute-api.{{region}}.amazonaws.com/dev/login",
+							"protocol": "http",
+							"host": [
+								"{{appId}}",
+								"execute-api",
+								"{{region}}",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"dev",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "notes",
+			"item": [
+				{
+					"name": "prerequisite",
+					"item": [
+						{
+							"name": "Login with John User",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const payload = pm.response.json();\r",
+											"pm.collectionVariables.set('accessTokenJohn', payload.token);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"john\",\r\n    \"password\": \"secret\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{appId}}.execute-api.{{region}}.amazonaws.com/dev/login",
+									"protocol": "http",
+									"host": [
+										"{{appId}}",
+										"execute-api",
+										"{{region}}",
+										"amazonaws",
+										"com"
+									],
+									"path": [
+										"dev",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login with Jane User",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const payload = pm.response.json();\r",
+											"pm.collectionVariables.set('accessTokenJane', payload.token);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"jane\",\r\n    \"password\": \"secret\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{appId}}.execute-api.{{region}}.amazonaws.com/dev/login",
+									"protocol": "http",
+									"host": [
+										"{{appId}}",
+										"execute-api",
+										"{{region}}",
+										"amazonaws",
+										"com"
+									],
+									"path": [
+										"dev",
+										"login"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "[John] Create Note",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('it should response with 201 status code', () => {\r",
+									"    pm.expect(pm.response).to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test('it should response with correct body', () => {\r",
+									"    const payload = pm.response.json();\r",
+									"\r",
+									"    pm.expect(typeof payload.newNote.id).to.equal('string');\r",
+									"\r",
+									"    pm.collectionVariables.set('johnNoteId', payload.newNote.id);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessTokenJohn}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Test Note Title\",\r\n    \"body\": \"It's John note!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{appId}}.execute-api.{{region}}.amazonaws.com/dev/notes",
+							"protocol": "http",
+							"host": [
+								"{{appId}}",
+								"execute-api",
+								"{{region}}",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"dev",
+								"notes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[Jane] Create Note",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('it should response with 201 status code', () => {\r",
+									"    pm.expect(pm.response).to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test('it should response with correct body', () => {\r",
+									"    const payload = pm.response.json();\r",
+									"\r",
+									"    pm.expect(typeof payload.newNote.id).to.equal('string');\r",
+									"\r",
+									"    pm.collectionVariables.set('janeNoteId', payload.newNote.id);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessTokenJane}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Test Note Title\",\r\n    \"body\": \"It's Jane note!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{appId}}.execute-api.{{region}}.amazonaws.com/dev/notes",
+							"protocol": "http",
+							"host": [
+								"{{appId}}",
+								"execute-api",
+								"{{region}}",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"dev",
+								"notes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[John] Get All Notes (Unarchived)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('it should response 200', () => {\r",
+									"    pm.expect(pm.response).to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessTokenJohn}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{appId}}.execute-api.{{region}}.amazonaws.com/dev/notes",
+							"protocol": "http",
+							"host": [
+								"{{appId}}",
+								"execute-api",
+								"{{region}}",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"dev",
+								"notes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[Jane] Get All Notes (Unarchived)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('it should response 200', () => {\r",
+									"    pm.expect(pm.response).to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessTokenJane}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{appId}}.execute-api.{{region}}.amazonaws.com/dev/notes",
+							"protocol": "http",
+							"host": [
+								"{{appId}}",
+								"execute-api",
+								"{{region}}",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"dev",
+								"notes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[John] Get Specified Note",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('it should response 200', () => {\r",
+									"    pm.expect(pm.response).to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessTokenJohn}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{appId}}.execute-api.{{region}}.amazonaws.com/dev/notes/{{johnNoteId}}",
+							"protocol": "http",
+							"host": [
+								"{{appId}}",
+								"execute-api",
+								"{{region}}",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"dev",
+								"notes",
+								"{{johnNoteId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[Jane] Get Specified Note",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('it should response 200', () => {\r",
+									"    pm.expect(pm.response).to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessTokenJane}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{appId}}.execute-api.{{region}}.amazonaws.com/dev/notes/{{janeNoteId}}",
+							"protocol": "http",
+							"host": [
+								"{{appId}}",
+								"execute-api",
+								"{{region}}",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"dev",
+								"notes",
+								"{{janeNoteId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[John] Get Jane Specified Note",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('it should response 403', () => {\r",
+									"    pm.expect(pm.response).to.have.status(403);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessTokenJohn}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{appId}}.execute-api.{{region}}.amazonaws.com/dev/notes/{{janeNoteId}}",
+							"protocol": "http",
+							"host": [
+								"{{appId}}",
+								"execute-api",
+								"{{region}}",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"dev",
+								"notes",
+								"{{janeNoteId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[John] Update Specified Note",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('it should response with 200', () => {\r",
+									"    pm.expect(pm.response).to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessTokenJohn}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"New Title\",\r\n    \"body\": \"New Body\",\r\n    \"archived\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{appId}}.execute-api.{{region}}.amazonaws.com/dev/notes/{{johnNoteId}}",
+							"protocol": "http",
+							"host": [
+								"{{appId}}",
+								"execute-api",
+								"{{region}}",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"dev",
+								"notes",
+								"{{johnNoteId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[John] Update Jane Specified Note",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('it should response 403', () => {\r",
+									"    pm.expect(pm.response).to.have.status(403);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessTokenJohn}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"New Title\",\r\n    \"body\": \"New Body\",\r\n    \"archived\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{appId}}.execute-api.{{region}}.amazonaws.com/dev/notes/{{janeNoteId}}",
+							"protocol": "http",
+							"host": [
+								"{{appId}}",
+								"execute-api",
+								"{{region}}",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"dev",
+								"notes",
+								"{{janeNoteId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[John] Get All Notes (archived)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('it should response 200', () => {\r",
+									"    pm.expect(pm.response).to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessTokenJohn}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{appId}}.execute-api.{{region}}.amazonaws.com/dev/archives",
+							"protocol": "http",
+							"host": [
+								"{{appId}}",
+								"execute-api",
+								"{{region}}",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"dev",
+								"archives"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[John] Get Specified Note",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('it should response 200', () => {\r",
+									"    pm.expect(pm.response).to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessTokenJohn}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://{{appId}}.execute-api.{{region}}.amazonaws.com/dev/notes/{{johnNoteId}}",
+							"protocol": "http",
+							"host": [
+								"{{appId}}",
+								"execute-api",
+								"{{region}}",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"dev",
+								"notes",
+								"{{johnNoteId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "attachments",
+			"item": [
+				{
+					"name": "prerequisite",
+					"item": [
+						{
+							"name": "[John] Create Note",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const payload = pm.response.json();\r",
+											"pm.collectionVariables.set('johnNoteId', payload.newNote.id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{accessTokenJohn}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\": \"Test Note Title\",\r\n    \"body\": \"It's John note!\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://{{appId}}.execute-api.{{region}}.amazonaws.com/dev/notes",
+									"protocol": "http",
+									"host": [
+										"{{appId}}",
+										"execute-api",
+										"{{region}}",
+										"amazonaws",
+										"com"
+									],
+									"path": [
+										"dev",
+										"notes"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "[John] Add Attachment to John Note",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessTokenJohn}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://{{appId}}.execute-api.{{region}}.amazonaws.com/dev/notes/{{johnNoteId}}/attachments",
+							"protocol": "http",
+							"host": [
+								"{{appId}}",
+								"execute-api",
+								"{{region}}",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"dev",
+								"notes",
+								"{{johnNoteId}}",
+								"attachments"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "accessTokenJohn",
+			"value": ""
+		},
+		{
+			"key": "accessTokenJane",
+			"value": ""
+		},
+		{
+			"key": "appId",
+			"value": "37jqfxfyj4"
+		},
+		{
+			"key": "region",
+			"value": "ap-southeast-1"
+		},
+		{
+			"key": "janeNoteId",
+			"value": ""
+		},
+		{
+			"key": "johnNoteId",
+			"value": ""
+		}
+	]
+}
