@@ -19,6 +19,14 @@ const config = {
       },
     },
   },
+  s3: {
+    buckets: {
+      attachments: {
+        NAME: process.env.ATTACHMENTS_BUCKET_NAME,
+      },
+    },
+    SIGNED_URL_EXPIRATION: process.env.SIGNED_URL_EXPIRATION,
+  },
   token: {
     jwt: {
       SECRET_NAME: process.env.TOKEN_JWT_SECRET_NAME,

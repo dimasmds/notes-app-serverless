@@ -10,6 +10,7 @@ interface NoteRepository {
   getNoteById(id: string): Promise<Note | null>;
   update(note: NoteUpdate): Promise<void>;
   delete(id: string): Promise<void>;
+  addAttachment(id: string, attachmentId: string): Promise<void>;
 }
 
 export default NoteRepository;
