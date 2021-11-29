@@ -3,6 +3,7 @@ import NoteRepository from '../../Domains/notes/repository/NoteRepository';
 import JwtTokenize from '../security/JwtTokenize';
 import IdGenerator from '../generator/IdGenerator';
 import StorageService from '../storage/StorageService';
+import config from '../../Commons/config';
 
 type UseCasePayload = {
   token: string,
@@ -35,7 +36,7 @@ class UpdateAttachmentUseCase {
     if (note.userId !== userId) throw new Error('UPDATE_ATTACHMENT_USE_CASE.USER_NOT_OWNER');
 
     const attachmentId = await this.idGenerator.generate();
-    await this.noteRepository.addAttachment(noteId, attachmentId);
+    await this.noteRepository.addAttachment(noteId, `https://${config.s3.buckets.attachments.NAME}.s3.amazonaws.com/${attachmentId}`);
     return this.storageService.getPutPreSignedUrl(attachmentId);
   }
 }
