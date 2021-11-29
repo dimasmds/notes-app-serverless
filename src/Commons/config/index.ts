@@ -11,7 +11,21 @@ const config = {
           BY_USERNAME: process.env.USERS_BY_USERNAME_INDEX,
         },
       },
+      notes: {
+        NAME: process.env.NOTES_TABLE,
+        index: {
+          BY_USER_ID: process.env.NOTES_BY_USER_ID_INDEX,
+        },
+      },
     },
+  },
+  s3: {
+    buckets: {
+      attachments: {
+        NAME: process.env.ATTACHMENTS_BUCKET_NAME,
+      },
+    },
+    SIGNED_URL_EXPIRATION: process.env.SIGNED_URL_EXPIRATION,
   },
   token: {
     jwt: {
