@@ -27,7 +27,7 @@ describe('NoteCreation', () => {
         userId: 'user-123',
         createdAt: expect.any(String),
         updatedAt: expect.any(String),
-        collaborators: [],
+        attachments: [],
         archived: false,
       };
 

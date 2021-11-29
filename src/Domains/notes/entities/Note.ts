@@ -6,7 +6,7 @@ type Note = {
   createdAt: string;
   updatedAt: string;
   userId: string;
-  collaborators: string[];
+  attachments: string[];
 }
 
 export default Note;

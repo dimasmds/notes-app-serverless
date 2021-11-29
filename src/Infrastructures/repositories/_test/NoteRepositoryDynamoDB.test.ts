@@ -20,7 +20,7 @@ describe('NoteRepositoryDynamoDB', () => {
         updatedAt: 'dummy_updated_at',
         archived: false,
         userId: 'user-123',
-        collaborators: [],
+        attachments: [],
       };
 
       // Action
@@ -39,7 +39,7 @@ describe('NoteRepositoryDynamoDB', () => {
       expect(item.updatedAt).toEqual(note.updatedAt);
       expect(item.archived).toEqual(note.archived);
       expect(item.userId).toEqual(note.userId);
-      expect(item.collaborators).toEqual(note.collaborators);
+      expect(item.attachments).toEqual(note.attachments);
     });
   });
 

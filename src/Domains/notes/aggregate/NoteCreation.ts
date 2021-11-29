@@ -35,7 +35,7 @@ class NoteCreation {
       userId,
       createdAt,
       updatedAt: createdAt,
-      collaborators: [],
+      attachments: [],
       archived: false,
     };
 
