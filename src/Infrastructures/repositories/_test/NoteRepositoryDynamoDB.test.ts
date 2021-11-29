@@ -176,4 +176,28 @@ describe('NoteRepositoryDynamoDB', () => {
       expect(isOwner).toBeTruthy();
     });
   });
+
+  describe('update', () => {
+    it('should update note correctly', async () => {
+      // Arrange
+      await NotesTableDynamoDBHelper.addNote({
+        id: 'note-123',
+        userId: 'user-123',
+      });
+
+      // Action
+      await noteRepository.update({
+        id: 'note-123',
+        title: 'new title',
+        body: 'new content',
+        archived: true,
+      });
+
+      // Assert
+      const note = await noteRepository.getNoteById('note-123');
+      expect(note.title).toEqual('new title');
+      expect(note.body).toEqual('new content');
+      expect(note.archived).toEqual(true);
+    });
+  });
 });

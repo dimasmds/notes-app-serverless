@@ -3,6 +3,7 @@ import NoteRepository from '../../Domains/notes/repository/NoteRepository';
 import client from '../dynamodb/client';
 import Note from '../../Domains/notes/entities/Note';
 import config from '../../Commons/config';
+import NoteUpdate from '../../Domains/notes/entities/NoteUpdate';
 
 class NoteRepositoryDynamoDB implements NoteRepository {
   private client: DocumentClient;
@@ -59,6 +60,25 @@ class NoteRepositoryDynamoDB implements NoteRepository {
   async isNoteOwner(noteId: string, userId: string): Promise<boolean> {
     const note = await this.getNoteById(noteId);
     return !note ? false : note.userId === userId;
+  }
+
+  async update(note: NoteUpdate): Promise<void> {
+    const {
+      id, title, body, archived,
+    } = note;
+
+    await this.client.update({
+      TableName: config.dynamodb.tables.notes.NAME,
+      Key: {
+        id,
+      },
+      UpdateExpression: 'set title = :title, body = :body, archived = :archived',
+      ExpressionAttributeValues: {
+        ':title': title,
+        ':body': body,
+        ':archived': archived,
+      },
+    }).promise();
   }
 }
 
