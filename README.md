@@ -40,5 +40,4 @@ It's also support for local development. To do so, run the following commands:
 ### Postman collection
 
 A Postman collection is available in the root folder of the project. The filename is `notes-app-serverless.postman_collection.json`, as a way to test the API.
-
-****
+To test the application, **please run request collection sequentially**.
