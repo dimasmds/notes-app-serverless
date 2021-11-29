@@ -217,4 +217,37 @@ describe('NoteRepositoryDynamoDB', () => {
       expect(note).toBeNull();
     });
   });
+
+  describe('addAttachment', () => {
+    it('should update attachments array correctly', async () => {
+      // Arrange
+      await NotesTableDynamoDBHelper.addNote({
+        id: 'note-123',
+        userId: 'user-123',
+      });
+
+      // Action
+      await noteRepository.addAttachment('note-123', 'attachment-123');
+
+      // Assert
+      const note = await noteRepository.getNoteById('note-123');
+      expect(note.attachments).toEqual(['attachment-123']);
+    });
+
+    it('should append attachments array correctly', async () => {
+      // Arrange
+      await NotesTableDynamoDBHelper.addNote({
+        id: 'note-123',
+        userId: 'user-123',
+        attachments: ['attachment-123'],
+      });
+
+      // Action
+      await noteRepository.addAttachment('note-123', 'attachment-456');
+
+      // Assert
+      const note = await noteRepository.getNoteById('note-123');
+      expect(note.attachments).toEqual(['attachment-123', 'attachment-456']);
+    });
+  });
 });

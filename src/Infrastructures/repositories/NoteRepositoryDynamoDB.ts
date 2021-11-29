@@ -89,6 +89,23 @@ class NoteRepositoryDynamoDB implements NoteRepository {
       },
     }).promise();
   }
+
+  async addAttachment(id: string, attachmentId: string): Promise<void> {
+    await this.client.update({
+      TableName: config.dynamodb.tables.notes.NAME,
+      Key: {
+        id,
+      },
+      UpdateExpression: 'set #attachments = list_append(if_not_exists(#attachments, :empty_list), :attachment)',
+      ExpressionAttributeNames: {
+        '#attachments': 'attachments',
+      },
+      ExpressionAttributeValues: {
+        ':attachment': [attachmentId],
+        ':empty_list': [],
+      },
+    }).promise();
+  }
 }
 
 export default NoteRepositoryDynamoDB;
