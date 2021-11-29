@@ -12,6 +12,8 @@ class DomainToHttpErrorTranslator {
     'GET_NOTE_USE_CASE.USER_NOT_OWNED_THE_NOTE': new AuthorizationError('you are not allowed to access this note'),
     'NOTE_REPLACEMENT.NOTE_NOT_FOUND': new NotFoundError('note is not found'),
     'NOTE_REPLACEMENT.USER_NOT_OWNER': new AuthorizationError('you are not allowed to access this note'),
+    'NOTE_DELETION.NOTE_NOT_FOUND': new NotFoundError('note is not found'),
+    'NOTE_DELETION.NOT_OWNER': new AuthorizationError('you are not allowed to access this note'),
   }
 
   static translate(domainError: Error): Error {
