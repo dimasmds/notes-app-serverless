@@ -200,7 +200,7 @@ functions:
     handler: src/Interfaces/lambda/http/getArchivedNotes.handler
     events:
       - http:
-          path: /archive
+          path: /archives
           method: get
           cors: true
           authorizer: Auth
@@ -267,6 +267,35 @@ functions:
       - Effect: Allow
         Action:
           - dynamodb:UpdateItem
+          - dynamodb:Query
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.NOTES_TABLE}
+      - Effect: Allow
+        Action:
+          - xray:GetSamplingRules
+          - xray:GetSamplingTargets
+          - xray:GetSamplingStatisticSummaries
+          - xray:BatchGetTraces
+          - xray:GetServiceGraph
+          - xray:GetTraceGraph
+          - xray:GetTraceSummaries
+          - xray:GetGroups
+          - xray:GetGroup
+          - xray:PutTraceSegments
+        Resource:
+          - "*"
+
+  DeleteNote:
+    handler: src/Interfaces/lambda/http/deleteNote.handler
+    events:
+      - http:
+          path: /notes/{id}
+          method: delete
+          cors: true
+          authorizer: Auth
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:DeleteItem
           - dynamodb:Query
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.NOTES_TABLE}
       - Effect: Allow
