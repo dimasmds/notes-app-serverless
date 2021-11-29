@@ -8,7 +8,8 @@ interface NoteRepository {
   getAllArchivedByUser(userId: string): Promise<Note[]>;
   isNoteOwner(noteId: string, userId: string): Promise<boolean>;
   getNoteById(id: string): Promise<Note | null>;
-  update(note: NoteUpdate): Promise<void>
+  update(note: NoteUpdate): Promise<void>;
+  delete(id: string): Promise<void>;
 }
 
 export default NoteRepository;
