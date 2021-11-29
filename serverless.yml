@@ -252,6 +252,38 @@ functions:
         Resource:
           - "*"
 
+  UpdateNote:
+    handler: src/Interfaces/lambda/http/updateNote.handler
+    events:
+      - http:
+          path: /notes/{id}
+          method: put
+          cors: true
+          authorizer: Auth
+          request:
+            schema:
+              application/json: ${file(src/Interfaces/lambda/http/models/update-note-request.json)}
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:UpdateItem
+          - dynamodb:Query
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.NOTES_TABLE}
+      - Effect: Allow
+        Action:
+          - xray:GetSamplingRules
+          - xray:GetSamplingTargets
+          - xray:GetSamplingStatisticSummaries
+          - xray:BatchGetTraces
+          - xray:GetServiceGraph
+          - xray:GetTraceGraph
+          - xray:GetTraceSummaries
+          - xray:GetGroups
+          - xray:GetGroup
+          - xray:PutTraceSegments
+        Resource:
+          - "*"
+
 
 resources:
   Resources:

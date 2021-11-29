@@ -11,6 +11,7 @@ import CreateNoteUseCase from '../Applications/use_cases/CreateNoteUseCase';
 import GetNotesUseCase from '../Applications/use_cases/GetNotesUseCase';
 import GetArchivedNotesUseCase from '../Applications/use_cases/GetArchivedNotesUseCase';
 import GetNoteUseCase from '../Applications/use_cases/GetNoteUseCase';
+import UpdateNoteUseCase from '../Applications/use_cases/UpdateNoteUseCase';
 
 const container = createContainer();
 
@@ -102,6 +103,11 @@ container.register([
   {
     key: GetNoteUseCase.name,
     Class: GetNoteUseCase,
+    parameter: useCaseParameter,
+  },
+  {
+    key: UpdateNoteUseCase.name,
+    Class: UpdateNoteUseCase,
     parameter: useCaseParameter,
   },
 ]);
