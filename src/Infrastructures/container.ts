@@ -13,6 +13,8 @@ import GetArchivedNotesUseCase from '../Applications/use_cases/GetArchivedNotesU
 import GetNoteUseCase from '../Applications/use_cases/GetNoteUseCase';
 import UpdateNoteUseCase from '../Applications/use_cases/UpdateNoteUseCase';
 import DeleteNoteUseCase from '../Applications/use_cases/DeleteNoteUseCase';
+import S3StorageService from './storage/S3StorageService';
+import UpdateAttachmentUseCase from '../Applications/use_cases/UpdateAttachmentUseCase';
 
 const container = createContainer();
 
@@ -43,6 +45,10 @@ const useCaseParameter: ParameterOption = {
       name: 'jwtTokenize',
       internal: 'JwtTokenize',
     },
+    {
+      name: 'storageService',
+      internal: 'StorageService',
+    },
   ],
 };
 
@@ -71,6 +77,10 @@ container.register([
   {
     key: 'JwtTokenize',
     Class: JwtTokenizeImpl,
+  },
+  {
+    key: 'StorageService',
+    Class: S3StorageService,
   },
 ]);
 
@@ -114,6 +124,11 @@ container.register([
   {
     key: DeleteNoteUseCase.name,
     Class: DeleteNoteUseCase,
+    parameter: useCaseParameter,
+  },
+  {
+    key: UpdateAttachmentUseCase.name,
+    Class: UpdateAttachmentUseCase,
     parameter: useCaseParameter,
   },
 ]);
