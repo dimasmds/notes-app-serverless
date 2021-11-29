@@ -200,4 +200,21 @@ describe('NoteRepositoryDynamoDB', () => {
       expect(note.archived).toEqual(true);
     });
   });
+
+  describe('delete', () => {
+    it('should delete note correctly', async () => {
+      // Arrange
+      await NotesTableDynamoDBHelper.addNote({
+        id: 'note-123',
+        userId: 'user-123',
+      });
+
+      // Action
+      await noteRepository.delete('note-123');
+
+      // Assert
+      const note = await noteRepository.getNoteById('note-123');
+      expect(note).toBeNull();
+    });
+  });
 });

@@ -80,6 +80,15 @@ class NoteRepositoryDynamoDB implements NoteRepository {
       },
     }).promise();
   }
+
+  async delete(id: string): Promise<void> {
+    await this.client.delete({
+      TableName: config.dynamodb.tables.notes.NAME,
+      Key: {
+        id,
+      },
+    }).promise();
+  }
 }
 
 export default NoteRepositoryDynamoDB;
