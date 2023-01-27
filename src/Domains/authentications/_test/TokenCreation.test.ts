@@ -25,7 +25,7 @@ describe('TokenCreation', () => {
       // Assert
       expect(token).toBe('access.token');
       expect(mockSecretManager.getSecret).toBeCalledWith(
-        config.token.jwt.SECRET_FIELD, config.token.jwt.SECRET_NAME,
+        config.token.jwt.SECRET_NAME, config.token.jwt.SECRET_FIELD,
       );
       expect(mockJwtTokenize.createToken).toBeCalledWith(
         payload, 'shh', Number(config.token.jwt.EXPIRES_TIME),

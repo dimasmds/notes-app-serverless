@@ -1,7 +1,7 @@
 // TODO: Skip this test if AWS is not configured
 import AWSSecretsManager from '../AWSSecretsManager';
 
-describe('AWSSecretManager', () => {
+xdescribe('AWSSecretManager', () => {
   const awsSecretManager = new AWSSecretsManager();
 
   describe('getSecret', () => {

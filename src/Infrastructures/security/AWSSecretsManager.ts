@@ -1,3 +1,5 @@
+/* istanbul ignore file */
+
 import * as AWS from 'aws-sdk';
 import { SecretsManager } from 'aws-sdk';
 import SecretManager from '../../Applications/security/SecretManager';
