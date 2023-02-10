@@ -7,3 +7,4 @@ coverage
 .serverless
 .webpack
 .esbuild
+package-lock.json

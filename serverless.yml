@@ -38,7 +38,7 @@ provider:
     TOKEN_JWT_SECRET_NAME: NotesAppSecret-${self:provider.stage}
     TOKEN_JWT_SECRET_FIELD: accessTokenSecretField
     TOKEN_JWT_EXPIRES_TIME: 50000
-    ATTACHMENTS_BUCKET_NAME: dmds-notes-app-attachments-${self:provider.stage}
+    ATTACHMENTS_BUCKET_NAME: dimasmds-ddc-notes-app-attachments-${self:provider.stage}
     SIGNED_URL_EXPIRATION: 300
 
 
