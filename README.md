@@ -1,6 +1,6 @@
 # Serverless Notes App
 
-A simple notes apps application using AWS Lambda and Serverless framework, for the capstone project of the Udacity Cloud Developer Nanodegree.
+A simple notes apps application using AWS Lambda and Serverless framework.
 
 ## Functionality of the application
 
@@ -10,7 +10,7 @@ This application will allow creating/removing/updating/fetching Notes items. Eac
 
 ### Node.js and NPM
 
-Before getting started, make sure Node.js is downloaded and installed. The latest version of Node.js can be downloaded from [nodejs.org](https://nodejs.com/en/download) and it's recommended to use the LTS version.
+Before getting started, make sure Node.js is downloaded and installed. The latest version of Node.js can be downloaded from [nodejs.org](https://nodejs.com/en/download), and it's recommended to use the LTS version.
 
 ### Serverless Framework
 
